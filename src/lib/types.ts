@@ -1,15 +1,19 @@
-export type HealthStatus = 'healthy' | 'needs-attention' | 'critical';
+export type Sunlight = 'low' | 'medium' | 'high';
+export type HealthStatus = 'healthy' | 'needs_attention' | 'critical';
 
 export interface Plant {
   id: string;
-  name: string;
-  species: string;
+  commonName: string;
+  scientificName: string;
   photoUrl: string | null;
   gradientFrom: string;
   gradientTo: string;
-  nextWaterDays: number;
-  health: HealthStatus;
+  wateringFrequencyDays: number;
+  sunlight: Sunlight;
+  soilType: string;
   addedAt: string;
+  lastWateredAt: string | null;
+  healthStatus: HealthStatus;
   notes: string;
 }
 
@@ -31,4 +35,13 @@ export interface UserProfile {
   isPremium: boolean;
   plantCount: number;
   joinedAt: string;
+}
+
+export interface PlantIdentificationResult {
+  commonName: string;
+  scientificName: string;
+  wateringFrequencyDays: number;
+  sunlight: Sunlight;
+  soilType: string;
+  description: string;
 }
