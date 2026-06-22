@@ -5,3 +5,4 @@ if (!admin.apps.length) {
 }
 
 export { identifyPlant } from './identifyPlant';
+export { generateCareSchedule } from './generateCareSchedule';

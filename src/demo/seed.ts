@@ -1,4 +1,4 @@
-import type { Plant, CareTask, UserProfile, GrowthEntry, CareLogEntry } from '../lib/types';
+import type { Plant, CareTask, UserProfile, GrowthEntry, CareLogEntry, WeatherData } from '../lib/types';
 
 function futureDate(daysAhead: number): string {
   const d = new Date(2026, 5, 22);
@@ -103,8 +103,13 @@ export const DEMO_CARE_LOGS: Record<string, CareLogEntry[]> = {
 };
 
 export const DEMO_CARE_TASKS: CareTask[] = [
+  // overdue (past due, not done)
+  { id: 'task-ov-1', plantId: 'plant-003', plantName: 'Peace Lily', type: 'water', dueDate: pastDate(2), done: false },
+  { id: 'task-ov-2', plantId: 'plant-001', plantName: 'Monstera', type: 'mist', dueDate: pastDate(1), done: false },
+  // today
   { id: 'task-001', plantId: 'plant-003', plantName: 'Peace Lily', type: 'water', dueDate: futureDate(0), done: false },
   { id: 'task-002', plantId: 'plant-002', plantName: 'Snake Plant', type: 'mist', dueDate: futureDate(0), done: false },
+  // upcoming
   { id: 'task-003', plantId: 'plant-001', plantName: 'Monstera', type: 'water', dueDate: futureDate(1), done: false },
   { id: 'task-004', plantId: 'plant-001', plantName: 'Monstera', type: 'fertilize', dueDate: futureDate(2), done: false },
   { id: 'task-005', plantId: 'plant-003', plantName: 'Peace Lily', type: 'fertilize', dueDate: futureDate(3), done: false },
@@ -114,3 +119,34 @@ export const DEMO_CARE_TASKS: CareTask[] = [
   { id: 'task-009', plantId: 'plant-001', plantName: 'Monstera', type: 'repot', dueDate: futureDate(6), done: false },
   { id: 'task-010', plantId: 'plant-002', plantName: 'Snake Plant', type: 'prune', dueDate: futureDate(7), done: false },
 ];
+
+export const DEMO_WEATHER: WeatherData = {
+  lat: 37.7749,
+  lng: -122.4194,
+  fetchedAt: new Date(2026, 5, 22).toISOString(),
+  today: { date: '2026-06-22', weatherCode: 3, tempMaxC: 22, tempMinC: 14, precipitationMm: 0, precipProbabilityPct: 15 },
+  forecast: [
+    { date: '2026-06-23', weatherCode: 61, tempMaxC: 19, tempMinC: 13, precipitationMm: 1.2, precipProbabilityPct: 65 },
+    { date: '2026-06-24', weatherCode: 63, tempMaxC: 17, tempMinC: 12, precipitationMm: 4.8, precipProbabilityPct: 80 },
+    { date: '2026-06-25', weatherCode: 61, tempMaxC: 18, tempMinC: 13, precipitationMm: 1.4, precipProbabilityPct: 60 },
+    { date: '2026-06-26', weatherCode: 2,  tempMaxC: 20, tempMinC: 13, precipitationMm: 0,   precipProbabilityPct: 20 },
+    { date: '2026-06-27', weatherCode: 1,  tempMaxC: 22, tempMinC: 14, precipitationMm: 0,   precipProbabilityPct: 10 },
+    { date: '2026-06-28', weatherCode: 0,  tempMaxC: 24, tempMinC: 15, precipitationMm: 0,   precipProbabilityPct: 5  },
+    { date: '2026-06-29', weatherCode: 2,  tempMaxC: 23, tempMinC: 15, precipitationMm: 0.3, precipProbabilityPct: 25 },
+  ],
+};
+
+export const DEMO_AI_ADJUSTMENTS: Record<string, { adjustedWateringDays: number; adjustmentReason: string }> = {
+  'plant-001': {
+    adjustedWateringDays: 9,
+    adjustmentReason: 'Higher humidity and rain forecast this week extends watering from 7 to 9 days.',
+  },
+  'plant-002': {
+    adjustedWateringDays: 14,
+    adjustmentReason: 'Current conditions are within normal parameters — standard 14-day schedule maintained.',
+  },
+  'plant-003': {
+    adjustedWateringDays: 6,
+    adjustmentReason: 'Incoming rain over the next 3 days reduces watering need from 5 to 6 days.',
+  },
+};

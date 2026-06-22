@@ -25,7 +25,7 @@ import {
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { getFunctions, httpsCallable } from 'firebase/functions';
 import { useStore } from './store';
-import type { UserProfile, Plant, CareTask, PlantIdentificationResult, GrowthEntry, CareLogEntry } from './types';
+import type { UserProfile, Plant, CareTask, PlantIdentificationResult, GrowthEntry, CareLogEntry, WeatherDay } from './types';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -139,6 +139,24 @@ export async function uploadPlantPhoto(uid: string, file: File): Promise<{ stora
 export async function identifyPlantViaFunction(storagePath: string): Promise<PlantIdentificationResult> {
   const fn = httpsCallable<{ storagePath: string }, PlantIdentificationResult>(functions, 'identifyPlant');
   const result = await fn({ storagePath });
+  return result.data;
+}
+
+export interface CareScheduleRequest {
+  plantId: string;
+  species: string;
+  wateringFrequencyDays: number;
+  weather: { today: WeatherDay; forecast: WeatherDay[] };
+}
+
+export interface CareScheduleResult {
+  adjustedWateringDays: number;
+  adjustmentReason: string;
+}
+
+export async function generateCareScheduleViaFunction(req: CareScheduleRequest): Promise<CareScheduleResult> {
+  const fn = httpsCallable<CareScheduleRequest, CareScheduleResult>(functions, 'generateCareSchedule');
+  const result = await fn(req);
   return result.data;
 }
 
