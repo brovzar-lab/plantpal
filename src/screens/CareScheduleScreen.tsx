@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useStore } from '../lib/store';
 import { isDemoMode } from '../lib/config';
 import type { CareTask, CareType, WeatherData } from '../lib/types';
@@ -188,9 +188,8 @@ export default function CareScheduleScreen() {
       const data = await fetchWeather(coords.latitude, coords.longitude);
       setWeather(data);
     } catch (err) {
-      const isPermissionDenied =
-        err instanceof GeolocationPositionError && err.code === GeolocationPositionError.PERMISSION_DENIED;
-      setWeatherError(isPermissionDenied ? 'Location access denied' : 'Could not load weather');
+      const code = (err as { code?: number })?.code;
+      setWeatherError(code === 1 ? 'Location access denied' : 'Could not load weather');
     } finally {
       setIsLoadingWeather(false);
     }
