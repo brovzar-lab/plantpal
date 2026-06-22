@@ -25,7 +25,7 @@ import {
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { getFunctions, httpsCallable } from 'firebase/functions';
 import { useStore } from './store';
-import type { UserProfile, Plant, CareTask, PlantIdentificationResult } from './types';
+import type { UserProfile, Plant, CareTask, PlantIdentificationResult, GrowthEntry, CareLogEntry } from './types';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -162,6 +162,36 @@ export async function markPlantWatered(uid: string, plantId: string): Promise<vo
   });
 }
 
+export async function getGrowthEntries(uid: string, plantId: string): Promise<GrowthEntry[]> {
+  const { getDocs, query, orderBy } = await import('firebase/firestore');
+  const q = query(
+    collection(db, 'users', uid, 'plants', plantId, 'growthEntries'),
+    orderBy('loggedAt', 'asc'),
+  );
+  const snap = await getDocs(q);
+  return snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<GrowthEntry, 'id'>) }));
+}
+
+export async function addGrowthEntry(uid: string, plantId: string, entry: Omit<GrowthEntry, 'id'>): Promise<string> {
+  const docRef = await addDoc(collection(db, 'users', uid, 'plants', plantId, 'growthEntries'), entry);
+  return docRef.id;
+}
+
+export async function getCareLogEntries(uid: string, plantId: string): Promise<CareLogEntry[]> {
+  const { getDocs, query, orderBy } = await import('firebase/firestore');
+  const q = query(
+    collection(db, 'users', uid, 'plants', plantId, 'careLog'),
+    orderBy('loggedAt', 'desc'),
+  );
+  const snap = await getDocs(q);
+  return snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<CareLogEntry, 'id'>) }));
+}
+
+export async function addCareLogEntry(uid: string, plantId: string, entry: Omit<CareLogEntry, 'id'>): Promise<string> {
+  const docRef = await addDoc(collection(db, 'users', uid, 'plants', plantId, 'careLog'), entry);
+  return docRef.id;
+}
+
 export async function signInEmail(email: string, password: string): Promise<void> {
   await signInWithEmailAndPassword(auth, email, password);
 }
@@ -176,6 +206,16 @@ export async function signInGoogle(): Promise<void> {
 
 export async function signOut(): Promise<void> {
   await fbSignOut(auth);
+}
+
+export async function upgradeUserToPro(): Promise<void> {
+  const user = auth.currentUser;
+  if (!user) throw new Error('Not authenticated');
+  const profileRef = doc(db, 'users', user.uid, 'profile', 'data');
+  await updateDoc(profileRef, { isPremium: true });
+  useStore.setState((s) => ({
+    user: s.user ? { ...s.user, isPremium: true } : null,
+  }));
 }
 
 export { serverTimestamp };

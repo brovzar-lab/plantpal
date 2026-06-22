@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Plant, HealthStatus } from '../lib/types';
 
 const healthConfig: Record<HealthStatus, { dot: string; label: string }> = {
@@ -41,14 +42,18 @@ interface Props {
   plant: Plant;
   onWater?: (plant: Plant) => void | Promise<void>;
   onDelete?: (plant: Plant) => void | Promise<void>;
+  onClick?: (plant: Plant) => void;
 }
 
-export default function PlantCard({ plant, onWater, onDelete }: Props) {
+export default function PlantCard({ plant, onWater, onDelete, onClick }: Props) {
   const health = healthConfig[plant.healthStatus];
   const waterDays = daysUntilWater(plant);
 
   return (
-    <div className="rounded-2xl overflow-hidden border border-slate-100 shadow-sm bg-white">
+    <div
+      className="rounded-2xl overflow-hidden border border-slate-100 shadow-sm bg-white cursor-pointer"
+      onClick={() => onClick?.(plant)}
+    >
       <div
         className="h-36 w-full flex items-center justify-center text-5xl relative"
         style={{ background: `linear-gradient(135deg, ${plant.gradientFrom}, ${plant.gradientTo})` }}
@@ -60,7 +65,7 @@ export default function PlantCard({ plant, onWater, onDelete }: Props) {
         )}
         {onDelete && (
           <button
-            onClick={() => onDelete(plant)}
+            onClick={(e: React.MouseEvent) => { e.stopPropagation(); void onDelete(plant); }}
             className="absolute top-2 right-2 w-6 h-6 rounded-full bg-black/30 text-white text-xs flex items-center justify-center hover:bg-black/50 transition-colors"
             aria-label="Delete plant"
           >
@@ -82,7 +87,7 @@ export default function PlantCard({ plant, onWater, onDelete }: Props) {
           <WaterBadge days={waterDays} />
           {onWater && (
             <button
-              onClick={() => onWater(plant)}
+              onClick={(e: React.MouseEvent) => { e.stopPropagation(); void onWater(plant); }}
               className="text-xs text-blue-600 font-semibold hover:text-blue-700 transition-colors"
             >
               Mark watered

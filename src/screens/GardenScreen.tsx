@@ -96,6 +96,7 @@ export default function GardenScreen() {
                 plant={plant}
                 onWater={handleWater}
                 onDelete={handleDelete}
+                onClick={(p) => void navigate(`/plant/${p.id}`)}
               />
             ))}
           </div>

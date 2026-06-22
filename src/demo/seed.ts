@@ -1,4 +1,4 @@
-import type { Plant, CareTask, UserProfile } from '../lib/types';
+import type { Plant, CareTask, UserProfile, GrowthEntry, CareLogEntry } from '../lib/types';
 
 function futureDate(daysAhead: number): string {
   const d = new Date(2026, 5, 22);
@@ -68,6 +68,39 @@ export const DEMO_PLANTS: Plant[] = [
     notes: 'Drooping slightly — needs water today.',
   },
 ];
+
+export const DEMO_GROWTH_ENTRIES: Record<string, GrowthEntry[]> = {
+  'plant-001': [
+    { id: 'g-001-1', heightCm: 35, notes: 'Just added to garden', photoUrl: null, loggedAt: new Date(2026, 3, 10).toISOString() },
+    { id: 'g-001-2', heightCm: 42, notes: 'New leaf unfolding nicely', photoUrl: null, loggedAt: new Date(2026, 4, 5).toISOString() },
+    { id: 'g-001-3', heightCm: 51, notes: 'Growing fast after fertilizing', photoUrl: null, loggedAt: pastDate(15) },
+  ],
+  'plant-002': [
+    { id: 'g-002-1', heightCm: 28, notes: 'Initial measurement', photoUrl: null, loggedAt: new Date(2026, 4, 1).toISOString() },
+    { id: 'g-002-2', heightCm: 31, notes: 'Slow but steady growth', photoUrl: null, loggedAt: pastDate(10) },
+  ],
+  'plant-003': [
+    { id: 'g-003-1', heightCm: 22, notes: 'First measurement after repotting', photoUrl: null, loggedAt: new Date(2026, 4, 15).toISOString() },
+    { id: 'g-003-2', heightCm: 25, notes: 'Perked up after watering', photoUrl: null, loggedAt: pastDate(8) },
+  ],
+};
+
+export const DEMO_CARE_LOGS: Record<string, CareLogEntry[]> = {
+  'plant-001': [
+    { id: 'cl-001-1', type: 'watered', notes: '', photoUrl: null, loggedAt: pastDate(5) },
+    { id: 'cl-001-2', type: 'fertilized', notes: 'Added liquid fertilizer', photoUrl: null, loggedAt: pastDate(12) },
+    { id: 'cl-001-3', type: 'watered', notes: '', photoUrl: null, loggedAt: pastDate(19) },
+  ],
+  'plant-002': [
+    { id: 'cl-002-1', type: 'watered', notes: '', photoUrl: null, loggedAt: pastDate(9) },
+    { id: 'cl-002-2', type: 'note', notes: 'Leaf tips slightly yellow — may be overwatering', photoUrl: null, loggedAt: pastDate(3) },
+  ],
+  'plant-003': [
+    { id: 'cl-003-1', type: 'watered', notes: 'Drooping — gave extra water', photoUrl: null, loggedAt: pastDate(6) },
+    { id: 'cl-003-2', type: 'repotted', notes: 'Moved to 6" pot with fresh peat mix', photoUrl: null, loggedAt: new Date(2026, 4, 15).toISOString() },
+    { id: 'cl-003-3', type: 'pruned', notes: 'Removed two yellowed leaves', photoUrl: null, loggedAt: pastDate(20) },
+  ],
+};
 
 export const DEMO_CARE_TASKS: CareTask[] = [
   { id: 'task-001', plantId: 'plant-003', plantName: 'Peace Lily', type: 'water', dueDate: futureDate(0), done: false },

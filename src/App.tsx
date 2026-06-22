@@ -7,6 +7,8 @@ import GardenScreen from './screens/GardenScreen';
 import IdentifyScreen from './screens/IdentifyScreen';
 import CareScheduleScreen from './screens/CareScheduleScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import PlantDetailScreen from './screens/PlantDetailScreen';
+import SOSScreen from './screens/SOSScreen';
 import BottomNav from './components/BottomNav';
 import DemoBanner from './components/DemoBanner';
 import Toast from './components/Toast';
@@ -18,7 +20,9 @@ function AppShell() {
       <div className="flex-1 overflow-hidden flex flex-col">
         <Routes>
           <Route path="/" element={<GardenScreen />} />
+          <Route path="/plant/:plantId" element={<PlantDetailScreen />} />
           <Route path="/identify" element={<IdentifyScreen />} />
+          <Route path="/sos" element={<SOSScreen />} />
           <Route path="/schedule" element={<CareScheduleScreen />} />
           <Route path="/profile" element={<ProfileScreen />} />
           <Route path="*" element={<Navigate to="/" replace />} />
