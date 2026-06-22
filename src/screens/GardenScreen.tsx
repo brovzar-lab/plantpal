@@ -51,7 +51,7 @@ export default function GardenScreen() {
   function handleAddPlant() {
     if (!user) return;
     if (!user.isPremium && plants.length >= FREE_LIMIT) {
-      setUpgradeModalOpen(true);
+      setUpgradeModalOpen(true, 'plants');
       return;
     }
     void navigate('/identify');

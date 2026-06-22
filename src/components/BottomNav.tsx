@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 const tabs = [
   { to: '/', icon: '🌿', label: 'My Garden' },
   { to: '/identify', icon: '🔍', label: 'Identify' },
+  { to: '/sos', icon: '🆘', label: 'SOS', accent: true },
   { to: '/schedule', icon: '📅', label: 'Schedule' },
   { to: '/profile', icon: '👤', label: 'Profile' },
 ];
@@ -17,7 +18,13 @@ export default function BottomNav() {
           end={tab.to === '/'}
           className={({ isActive }) =>
             `flex-1 flex flex-col items-center gap-0.5 py-2.5 text-xs font-medium transition-colors ${
-              isActive ? 'text-green-600' : 'text-slate-400'
+              isActive
+                ? tab.accent
+                  ? 'text-red-600'
+                  : 'text-green-600'
+                : tab.accent
+                  ? 'text-red-400'
+                  : 'text-slate-400'
             }`
           }
         >

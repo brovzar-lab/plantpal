@@ -165,7 +165,7 @@ export default function IdentifyScreen() {
 
     const FREE_LIMIT = 3;
     if (!user.isPremium && plants.length >= FREE_LIMIT) {
-      setUpgradeModalOpen(true);
+      setUpgradeModalOpen(true, 'plants');
       return;
     }
 
