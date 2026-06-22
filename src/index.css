@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body, #root {
+    height: 100%;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-color: #f0fdf4;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+  }
+
+  #root {
+    width: 100%;
+    max-width: 390px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.08);
+  }
+}
+
+@layer utilities {
+  .text-brand {
+    color: #16a34a;
+  }
+  .bg-brand {
+    background-color: #16a34a;
+  }
+  .border-brand {
+    border-color: #16a34a;
+  }
+}
